@@ -64,6 +64,7 @@ const Tuner = () => {
       </div>
       {currentNote && <p>Nota atual: {currentNote}</p>}
     </div>
+    
   );
 };
 

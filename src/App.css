@@ -23,7 +23,7 @@ button {
   cursor: pointer;
   border-radius: 50%;
   border: none;
-  background-color: brown;
+  background-color: #0079e2;
   position: relative; /* Garante que o pseudo-elemento seja posicionado relativo ao botão */
 }
 
