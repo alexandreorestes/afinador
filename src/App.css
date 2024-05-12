@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+h1{
+  text-align: center;
+}
+.container {
+  text-align: center;
+  max-width: 600px; /* Define a largura máxima do conteúdo */
+  margin: auto; /* Define margens automáticas para centralizar horizontalmente */
+}
+
+button {
+  margin: 2px;
+  padding: 15px 15px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  background-color: brown;
+  position: relative; /* Garante que o pseudo-elemento seja posicionado relativo ao botão */
+}
+
+button::before {
+  content: ''; /* Define o conteúdo do pseudo-elemento como vazio */
+  position: absolute; /* Posiciona o pseudo-elemento de forma absoluta em relação ao botão */
+  top: -30px; /* Posiciona o pseudo-elemento 30 pixels acima do topo do botão */
+  left: 50%; /* Posiciona o pseudo-elemento no meio horizontal do botão */
+  width: 5px; /* Define a largura da linha como 1 pixel */
+  height: 30px; /* Define a altura da linha como 30 pixels (equivalente a 3 centímetros) */
+  background-color: black; /* Define a cor da linha */
+  transform: translateX(-50%); /* Move a linha horizontalmente para a esquerda em 50% da sua própria largura */
+  z-index: -1; /* Coloca a linha atrás do botão */
+}
+
+
+@media screen and (max-width: 600px) {
+  button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+
