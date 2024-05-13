@@ -12,7 +12,7 @@ const Tuner = () => {
   });
   const [currentNote, setCurrentNote] = useState(null);
   const oscillatorRef = useRef(null);
-  const gain = 30; // Ganho definido manualmente no código
+  const [gain, setGain] = useState(0.5); // Estado para controlar o ganho
 
   const tuneString = (string, frequency) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -21,7 +21,7 @@ const Tuner = () => {
     oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
 
     const gainNode = audioContext.createGain();
-    gainNode.gain.setValueAtTime(gain, audioContext.currentTime);
+    gainNode.gain.setValueAtTime(gain, audioContext.currentTime); // Aplica o ganho atual
 
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
@@ -43,6 +43,10 @@ const Tuner = () => {
       oscillatorRef.current.start();
       event.target.style.backgroundColor = 'green';
     }
+  };
+
+  const handleGainChange = (event) => {
+    setGain(parseFloat(event.target.value)); // Atualiza o ganho baseado no valor do slider
   };
 
   return (
@@ -70,6 +74,8 @@ const Tuner = () => {
         </button>
       </div>
       {currentNote && <p>Nota atual: {currentNote}</p>}
+      <input type="range" min="0" max="50" step="0.1" value={gain} onChange={handleGainChange} />
+      <label htmlFor="gain">Volume: {gain.toFixed(2)}</label>
     </div>
   );
 };
