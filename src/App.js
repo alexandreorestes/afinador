@@ -11,15 +11,22 @@ const Tuner = () => {
     e: 329.63,
   });
   const [currentNote, setCurrentNote] = useState(null);
-  const oscillatorRef = useRef(null); // useRef hook to store oscillator
+  const oscillatorRef = useRef(null);
+  const gain = 1.5; // Ganho definido manualmente no código
 
   const tuneString = (string, frequency) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     oscillator.type = 'sine';
     oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-    oscillator.connect(audioContext.destination);
-    oscillatorRef.current = oscillator; // Store oscillator in useRef
+
+    const gainNode = audioContext.createGain();
+    gainNode.gain.setValueAtTime(gain, audioContext.currentTime);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillatorRef.current = oscillator;
   };
 
   const toggleSound = (event) => {
@@ -28,13 +35,13 @@ const Tuner = () => {
 
     if (oscillatorRef.current) {
       oscillatorRef.current.stop();
-      oscillatorRef.current = null; // Clear oscillator reference
-      event.target.style.backgroundColor = 'brown'; // Reset button color
+      oscillatorRef.current = null;
+      event.target.style.backgroundColor = 'brown';
     } else {
       tuneString(string, frequency);
       setCurrentNote(string);
       oscillatorRef.current.start();
-      event.target.style.backgroundColor = 'green'; // Change button color
+      event.target.style.backgroundColor = 'green';
     }
   };
 
@@ -64,7 +71,6 @@ const Tuner = () => {
       </div>
       {currentNote && <p>Nota atual: {currentNote}</p>}
     </div>
-    
   );
 };
 
