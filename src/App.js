@@ -12,7 +12,7 @@ const Tuner = () => {
   });
   const [currentNote, setCurrentNote] = useState(null);
   const oscillatorRef = useRef(null);
-  const gain = 1.5; // Ganho definido manualmente no código
+  const gain = 2.5; // Ganho definido manualmente no código
 
   const tuneString = (string, frequency) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
