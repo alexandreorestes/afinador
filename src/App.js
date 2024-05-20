@@ -12,7 +12,7 @@ const Tuner = () => {
   });
   const [currentNote, setCurrentNote] = useState(null);
   const oscillatorRef = useRef(null);
-  const [gain, setGain] = useState(0.5); // Estado para controlar o ganho
+  const [gain, setGain] = useState(2); // Estado para controlar o ganho
 
   const tuneString = (string, frequency) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -74,7 +74,7 @@ const Tuner = () => {
         </button>
       </div>
       {currentNote && <p>Nota atual: {currentNote}</p>}
-      <input type="range" min="0" max="50" step="0.1" value={gain} onChange={handleGainChange} />
+      <input type="range" min="0" max="5" step="1" value={gain} onChange={handleGainChange} />
       <label htmlFor="gain">Volume: {gain.toFixed(2)}</label>
     </div>
   );
