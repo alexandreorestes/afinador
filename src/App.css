@@ -6,9 +6,7 @@ body {
   height: 100vh;
   margin: 0;
 }
-h1{
-  text-align: center;
-}
+
 .container {
   text-align: center;
   max-width: 600px; /* Define a largura máxima do conteúdo */
@@ -46,5 +44,6 @@ button::before {
     font-size: 14px;
   }
 }
+
 
 
