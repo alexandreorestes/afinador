@@ -12,15 +12,17 @@ const Tuner = () => {
   });
 
   const [cavaquinhoTuning] = useState({
-    D4: 587.32,  // Primeira corda
-    B3: 493.88,  // Segunda corda
-    G4: 392.00,  // Terceira corda
-    D4_2: 293.66 // Quarta corda (segundo D4)
+    D: 293.66,
+    G: 392.00,
+    B: 493.88,
+    d: 587.32,
   });
 
   const [currentNote, setCurrentNote] = useState(null);
+  const [selectedInstrument, setSelectedInstrument] = useState(null);
+  const [clickedLink, setClickedLink] = useState(null); // Novo estado para rastrear o link clicado
   const oscillatorRef = useRef(null);
-  const [gain, setGain] = useState(2); // Estado para controlar o ganho
+  const [gain, setGain] = useState(2);
 
   const tuneString = (string, frequency) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -29,7 +31,7 @@ const Tuner = () => {
     oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
 
     const gainNode = audioContext.createGain();
-    gainNode.gain.setValueAtTime(gain, audioContext.currentTime); // Aplica o ganho atual
+    gainNode.gain.setValueAtTime(gain, audioContext.currentTime);
 
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
@@ -54,51 +56,56 @@ const Tuner = () => {
   };
 
   const handleGainChange = (event) => {
-    setGain(parseFloat(event.target.value)); // Atualiza o ganho baseado no valor do slider
+    setGain(parseFloat(event.target.value));
+  };
+
+  const handleLinkClick = (instrument) => {
+    setSelectedInstrument(instrument);
+    setClickedLink(instrument);
+  };
+
+  const renderTunerButtons = (isCavaquinho = false) => {
+    const instrumentTuning = isCavaquinho ? cavaquinhoTuning : tuning;
+    return (
+      <div>
+        {Object.keys(instrumentTuning).map((string) => (
+          <button key={string} onClick={(e) => toggleSound(e, isCavaquinho)} data-string={string}>
+            {string}
+          </button>
+        ))}
+      </div>
+    );
   };
 
   return (
-    <div>
-      <h1>Violão</h1>
-      <br />
+    <div className='circulo' >
+      <h1>Afinadores</h1>
       <div>
-        <button onClick={(e) => toggleSound(e, false)} data-string="E">
-          6ªE
-        </button>
-        <button onClick={(e) => toggleSound(e, false)} data-string="A">
-          5ªA
-        </button>
-        <button onClick={(e) => toggleSound(e, false)} data-string="D">
-          4ªD
-        </button>
-        <button onClick={(e) => toggleSound(e, false)} data-string="G">
-          3ªG
-        </button>
-        <button onClick={(e) => toggleSound(e, false)} data-string="B">
-          2ªB
-        </button>
-        <button onClick={(e) => toggleSound(e, false)} data-string="e">
-          1ªe
-        </button>
+        <a 
+          href="#" 
+          onClick={(e) => { e.preventDefault(); handleLinkClick('violao'); }} 
+          className={clickedLink === 'violao' ? 'link clicked' : 'link'}
+        >
+          Violão
+        </a>
+        <a 
+          href="#" 
+          onClick={(e) => { e.preventDefault(); handleLinkClick('cavaquinho'); }} 
+          className={clickedLink === 'cavaquinho' ? 'link clicked' : 'link'}
+        >
+          Cavaquinho
+        </a>
       </div>
-      <br />
-      <hr />
-      <h1>Cavaquinho</h1>
-      <br />
-      <div>
-        <button onClick={(e) => toggleSound(e, true)} data-string="D4">
-          1ªD
-        </button>
-        <button onClick={(e) => toggleSound(e, true)} data-string="B3">
-          2ªB
-        </button>
-        <button onClick={(e) => toggleSound(e, true)} data-string="G4">
-          3ªG
-        </button>
-        <button onClick={(e) => toggleSound(e, true)} data-string="D4_2">
-          4ªD
-        </button>
-      </div>
+      {selectedInstrument === 'violao' && (
+        <div className='h1' ><br /><br />
+          {renderTunerButtons(false)}
+        </div>
+      )}
+      {selectedInstrument === 'cavaquinho' && (
+        <div className='h1'><br /><br />
+          {renderTunerButtons(true)}
+        </div>
+      )}
       {currentNote && <p>Nota atual: {currentNote}</p>}
       <input type="range" min="0" max="5" step="1" value={gain} onChange={handleGainChange} />
       <label htmlFor="gain">Volume: {gain.toFixed(2)}</label>
