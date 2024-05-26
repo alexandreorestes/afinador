@@ -5,16 +5,21 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
+  background-color: #f5f5f5; /* Fundo claro */
 }
 
 .container {
   text-align: center;
-  max-width: 600px; /* Define a largura máxima do conteúdo */
-  margin: auto; /* Define margens automáticas para centralizar horizontalmente */
+  max-width: 600px;
+  margin: auto;
 }
-h1{
+
+h1 {
   text-align: center;
+  color: #2364AA; /* Cor escura para melhor legibilidade */
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); /* Sombra com deslocamento de 2px para direita e para baixo, desfoque de 4px e cor preta com 50% de opacidade */
 }
+
 
 button {
   margin: 2px;
@@ -24,59 +29,69 @@ button {
   cursor: pointer;
   border-radius: 50%;
   border: none;
-  background-color: #0079e2;
-  position: relative; /* Garante que o pseudo-elemento seja posicionado relativo ao botão */
+  background-color: #4267B2; /* Azul do Facebook para os botões */
+  position: relative;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #3b5998; /* Cor mais escura para hover */
+  transform: scale(1.05);
 }
 
 button::before {
-  content: ''; /* Define o conteúdo do pseudo-elemento como vazio */
-  position: absolute; /* Posiciona o pseudo-elemento de forma absoluta em relação ao botão */
-  top: -30px; /* Posiciona o pseudo-elemento 30 pixels acima do topo do botão */
-  left: 50%; /* Posiciona o pseudo-elemento no meio horizontal do botão */
-  width: 5px; /* Define a largura da linha como 1 pixel */
-  height: 30px; /* Define a altura da linha como 30 pixels (equivalente a 3 centímetros) */
-  background-color: black; /* Define a cor da linha */
-  transform: translateX(-50%); /* Move a linha horizontalmente para a esquerda em 50% da sua própria largura */
-  z-index: -1; /* Coloca a linha atrás do botão */
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 5px;
+  height: 30px;
+  background-color: #3b5998; /* Azul do Facebook para a linha */
+  transform: translateX(-50%);
+  z-index: -1;
 }
+
 .link-container {
-  text-align: center; /* Para centralizar os links, se necessário */
+  text-align: center;
+  margin-top: 20px;
 }
 
 .link {
   display: inline-block;
-  font-size: 1.5em; /* Ajuste este valor conforme necessário */
+  font-size: 1.5em;
   text-decoration: none;
-  color: inherit;
-  margin: 0 1em; /* Espaço entre os links */
+  color: #4267B2; /* Azul do Facebook para os links */
+  margin: 0 1em;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .link:hover {
   text-decoration: none;
-  color: blue; /* Ajuste a cor conforme necessário */
+  color: #3b5998; /* Cor mais escura para hover */
 }
 
 .clicked {
-  color: red; /* Cor do link quando clicado */
+  color: #0c274a; /* Azul mais intenso para links clicados */
 }
 
 .circulo {
-  width: 400px; /* Largura do círculo */
-  height: 400px; /* Altura do círculo */
-  border-radius: 50%; /* Faz o elemento ser circular */
-  background: radial-gradient(circle, #f0c8ac, #fac2a9, #f7e1c5); /* Gradiente para simular a madeira */
-  border: 10px solid #66310b; /* Borda externa para simular o contorno do violão */
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f5f5f5, #e0e0e0, #cccccc); /* Gradiente em tons de cinza */
+  border: 3px solid #0c378c; /* Azul do Facebook para a borda */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 auto; /* Centraliza o círculo na página */
+  margin: 0 auto;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adiciona sombra para dar profundidade */
+  box-shadow: 
+    0 0 0 5px #3b5998, /* Primeira borda adicional */
+    0 0 0 7px #3c3893, /* Segunda borda adicional */
+    0 20px 20px rgba(0, 0, 0, 0.3); /* Sombra */
 }
-
-
 
 @media screen and (max-width: 600px) {
   button {
@@ -84,6 +99,3 @@ button::before {
     font-size: 14px;
   }
 }
-
-
-
