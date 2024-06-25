@@ -108,7 +108,7 @@ const Tuner = () => {
       )}
       {currentNote && <p>Nota atual: {currentNote}</p>}
       <input type="range" min="0" max="5" step="1" value={gain} onChange={handleGainChange} />
-      <label htmlFor="gain">Volume: {gain.toFixed(2)}</label>
+      <label htmlFor="gain">Volume: {gain.toFixed(1)}</label>
     </div>
   );
 };
