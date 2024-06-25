@@ -22,7 +22,7 @@ const Tuner = () => {
   const [selectedInstrument, setSelectedInstrument] = useState(null);
   const [clickedLink, setClickedLink] = useState(null); // Novo estado para rastrear o link clicado
   const oscillatorRef = useRef(null);
-  const [gain, setGain] = useState();
+  const [gain, setGain] = useState(2);
 
   const tuneString = (string, frequency) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
