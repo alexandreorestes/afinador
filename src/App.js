@@ -22,7 +22,7 @@ const Tuner = () => {
   const [selectedInstrument, setSelectedInstrument] = useState(null);
   const [clickedLink, setClickedLink] = useState(null); // Novo estado para rastrear o link clicado
   const oscillatorRef = useRef(null);
-  const [gain, setGain] = useState(2);
+  const gain = 2; // Volume padrão
 
   const tuneString = (string, frequency) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -31,12 +31,13 @@ const Tuner = () => {
     oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
 
     const gainNode = audioContext.createGain();
-    gainNode.gain.setValueAtTime(gain, audioContext.currentTime);
+    // Começa com volume zero para fade in
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
 
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
 
-    oscillatorRef.current = oscillator;
+    oscillatorRef.current = { oscillator, gainNode, audioContext };
   };
 
   const toggleSound = (event, isCavaquinho = false) => {
@@ -44,20 +45,30 @@ const Tuner = () => {
     const frequency = isCavaquinho ? cavaquinhoTuning[string] : tuning[string];
 
     if (oscillatorRef.current) {
-      oscillatorRef.current.stop();
-      oscillatorRef.current = null;
+      // Fade out
+      const { oscillator, gainNode, audioContext } = oscillatorRef.current;
+      gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+      gainNode.gain.setValueAtTime(gain, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5); // 0.5s fade out
+      setTimeout(() => {
+        oscillator.stop();
+        oscillatorRef.current = null;
+      }, 500);
       event.target.style.backgroundColor = 'brown';
     } else {
       tuneString(string, frequency);
       setCurrentNote(string);
-      oscillatorRef.current.start();
+      const { oscillator, gainNode, audioContext } = oscillatorRef.current;
+      oscillator.start();
+      // Fade in
+      gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(gain, audioContext.currentTime + 0.5); // 0.5s fade in
       event.target.style.backgroundColor = 'green';
     }
   };
 
-  const handleGainChange = (event) => {
-    setGain(parseFloat(event.target.value));
-  };
+
 
   const handleLinkClick = (instrument) => {
     setSelectedInstrument(instrument);
@@ -106,9 +117,7 @@ const Tuner = () => {
           {renderTunerButtons(true)}
         </div>
       )}
-      {currentNote && <p>Nota atual: {currentNote}</p>}
-      <input type="range" min="0" max="5" step="1" value={gain} onChange={handleGainChange} />
-      <label htmlFor="gain">Volume: {gain.toFixed(2)}</label>
+  {currentNote && <p>Nota atual: {currentNote}</p>}
     </div>
   );
 };
